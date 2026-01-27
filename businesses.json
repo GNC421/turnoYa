@@ -1,0 +1,72 @@
+[
+  {
+    "name": "Estilo Urbano Peluquería",
+    "description": "Peluquería moderna especializada en cortes urbanos, coloración y tratamientos capilares. Ambiente acogedor con atención personalizada.",
+    "category": "HAIR_SALON",
+    "street": "Avenida Principal",
+    "number": "123",
+    "city": "Madrid",
+    "state": "Madrid",
+    "zipCode": "28013",
+    "country": "España",
+    "email": "info@estilourbano.com",
+    "phone": "+34 91 123 45 67",
+    "website": "https://www.estilourbano.com"
+  },
+  {
+    "name": "Clínica Dental Sonrisa Perfecta",
+    "description": "Clínica dental con más de 15 años de experiencia. Especialistas en ortodoncia, implantes y blanqueamiento dental. Tecnología de última generación.",
+    "category": "MEDICAL_CLINIC",
+    "street": "Calle Salud",
+    "number": "45",
+    "city": "Barcelona",
+    "state": "Cataluña",
+    "zipCode": "08015",
+    "country": "España",
+    "email": "citas@sonrisaperfecta.com",
+    "phone": "+34 93 456 78 90",
+    "website": "https://www.sonrisaperfecta-dental.com"
+  },
+  {
+    "name": "Centro Deportivo Active Life",
+    "description": "Gimnasio completo con entrenadores personales certificados. Clases grupales, piscina, sauna y zona de wellness. Ideal para todos los niveles.",
+    "category": "FITNESS",
+    "street": "Plaza Deportiva",
+    "number": "22",
+    "city": "Valencia",
+    "state": "Valencia",
+    "zipCode": "46004",
+    "country": "España",
+    "email": "info@activelife.fit",
+    "phone": "+34 96 789 01 23",
+    "website": "https://www.activelife-fitness.com"
+  },
+  {
+    "name": "Spa Relax Total",
+    "description": "Spa de lujo con tratamientos de belleza y bienestar. Masajes terapéuticos, faciales, tratamientos corporales y día de spa completo.",
+    "category": "SPA",
+    "street": "Calle del Bienestar",
+    "number": "8",
+    "city": "Sevilla",
+    "state": "Andalucía",
+    "zipCode": "41001",
+    "country": "España",
+    "email": "reservas@relaxtotal.com",
+    "phone": "+34 95 234 56 78",
+    "website": "https://www.relaxtotal-spa.com"
+  },
+  {
+    "name": "Taller Mecánico Rápido",
+    "description": "Taller mecánico especializado en mantenimiento y reparación de vehículos. Servicio rápido, precios competitivos y garantía en todas las reparaciones.",
+    "category": "AUTO_REPAIR",
+    "street": "Polígono Industrial Norte",
+    "number": "15",
+    "city": "Bilbao",
+    "state": "País Vasco",
+    "zipCode": "48016",
+    "country": "España",
+    "email": "taller@mecanicorapido.com",
+    "phone": "+34 94 567 89 01",
+    "website": "https://www.mecanicorapido-taller.com"
+  }
+]

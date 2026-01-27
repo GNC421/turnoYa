@@ -1,0 +1,829 @@
+@use '@angular/material' as mat;
+
+.dashboard-container {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
+}
+
+/* Header del dashboard */
+.dashboard-header {
+  margin-bottom: 32px;
+  
+  .dashboard-title {
+    font-size: 32px;
+    font-weight: 800;
+    color: #333;
+    margin-bottom: 8px;
+    background: linear-gradient(135deg, #764ba2 0%, #9a6cd0 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    
+    @media (max-width: 768px) {
+      font-size: 24px;
+    }
+  }
+  
+  .dashboard-subtitle {
+    font-size: 16px;
+    color: #666;
+    margin: 0;
+  }
+}
+
+/* Tabs de navegación */
+.dashboard-tabs {
+  margin-bottom: 32px;
+  border-bottom: 1px solid rgba(118, 75, 162, 0.1);
+  
+  .tab-group {
+    border: none;
+    background: transparent;
+    
+    .tab-button {
+      padding: 12px 24px;
+      border: none;
+      background: transparent;
+      color: #666;
+      font-weight: 500;
+      font-size: 15px;
+      border-radius: 8px 8px 0 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      
+      &.mat-button-toggle-checked {
+        color: #764ba2;
+        background: rgba(118, 75, 162, 0.08);
+        position: relative;
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -1px;
+          left: 0;
+          right: 0;
+          height: 3px;
+          background: linear-gradient(90deg, #764ba2, #9a6cd0);
+          border-radius: 2px 2px 0 0;
+        }
+        
+        mat-icon {
+          color: #764ba2;
+        }
+      }
+      
+      &:hover:not(.mat-button-toggle-checked) {
+        background: rgba(118, 75, 162, 0.04);
+      }
+      
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}
+
+/* Contenido de los tabs */
+.tab-content {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(118, 75, 162, 0.08);
+  border: 1px solid rgba(118, 75, 162, 0.1);
+  
+  @media (max-width: 768px) {
+    padding: 20px;
+  }
+}
+
+/* Secciones comunes */
+.section-header {
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+  .section-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    mat-icon {
+      color: #764ba2;
+      font-size: 24px;
+      width: 24px;
+      height: 24px;
+    }
+  }
+  
+  .view-all-button {
+    color: #764ba2;
+    font-weight: 500;
+    
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+      margin-left: 4px;
+    }
+    
+    &:hover {
+      background: rgba(118, 75, 162, 0.08);
+    }
+  }
+}
+
+/* === TAB NEGOCIO === */
+.business-tab {
+  > *:not(:last-child) {
+    margin-bottom: 40px;
+  }
+}
+
+/* Selector de negocio */
+.business-selector-section {
+  .current-business {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(118, 75, 162, 0.05) 0%, rgba(154, 108, 208, 0.05) 100%);
+    border-radius: 12px;
+    border: 1px solid rgba(118, 75, 162, 0.1);
+    
+    .business-icon {
+      font-size: 32px;
+      width: 32px;
+      height: 32px;
+      color: #764ba2;
+    }
+    
+    .business-info {
+      flex: 1;
+      
+      .business-title {
+        margin: 0 0 4px 0;
+        font-size: 18px;
+        font-weight: 600;
+        color: #333;
+      }
+      
+      .business-status {
+        font-size: 13px;
+        color: #4caf50;
+        font-weight: 500;
+      }
+    }
+  }
+  
+  .business-menu-button {
+    border-color: rgba(118, 75, 162, 0.3);
+    color: #333;
+    padding: 12px 20px;
+    border-radius: 10px;
+    
+    mat-icon:first-child {
+      color: #764ba2;
+      margin-right: 10px;
+    }
+    
+    .business-name {
+      font-weight: 600;
+      margin: 0 8px;
+    }
+    
+    &:hover {
+      border-color: #764ba2;
+      background: rgba(118, 75, 162, 0.04);
+    }
+  }
+  
+  .no-business {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px;
+    background: linear-gradient(135deg, rgba(118, 75, 162, 0.05) 0%, rgba(154, 108, 208, 0.05) 100%);
+    border-radius: 12px;
+    border: 2px dashed rgba(118, 75, 162, 0.2);
+    
+    mat-icon {
+      font-size: 48px;
+      width: 48px;
+      height: 48px;
+      color: rgba(118, 75, 162, 0.3);
+    }
+    
+    .no-business-info {
+      flex: 1;
+      
+      h3 {
+        margin: 0 0 4px 0;
+        font-size: 18px;
+        color: #333;
+      }
+      
+      p {
+        margin: 0;
+        color: #666;
+        font-size: 14px;
+      }
+    }
+    
+    .create-business-button {
+      background: linear-gradient(135deg, #764ba2 0%, #8a5cc0 100%);
+      color: white;
+      font-weight: 600;
+      padding: 12px 24px;
+      
+      mat-icon {
+        color: white;
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        margin-right: 8px;
+      }
+      
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(118, 75, 162, 0.3);
+      }
+    }
+  }
+}
+
+/* Reservas próximas */
+.upcoming-reservations-section {
+  .reservations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  
+  .reservation-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: white;
+    border: 1px solid rgba(118, 75, 162, 0.1);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      border-color: rgba(118, 75, 162, 0.2);
+      box-shadow: 0 4px 12px rgba(118, 75, 162, 0.08);
+      transform: translateY(-2px);
+    }
+    
+    .reservation-time {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 80px;
+      
+      .time {
+        font-size: 20px;
+        font-weight: 700;
+        color: #764ba2;
+        line-height: 1;
+      }
+      
+      .period {
+        font-size: 13px;
+        color: #666;
+        text-transform: lowercase;
+      }
+    }
+    
+    .reservation-details {
+      flex: 1;
+      
+      .client-name {
+        margin: 0 0 6px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+      }
+      
+      .reservation-meta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        
+        .service {
+          font-size: 14px;
+          color: #666;
+        }
+        
+        .duration {
+          font-size: 13px;
+          color: #999;
+        }
+      }
+    }
+    
+    .reservation-actions {
+      .more-button {
+        color: #999;
+        
+        &:hover {
+          color: #764ba2;
+          background: rgba(118, 75, 162, 0.08);
+        }
+      }
+    }
+  }
+}
+
+/* Indicadores rápidos */
+.quick-stats-section {
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .stat-card {
+    padding: 24px;
+    background: white;
+    border: 1px solid rgba(118, 75, 162, 0.1);
+    border-radius: 12px;
+    text-align: center;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      border-color: rgba(118, 75, 162, 0.2);
+      box-shadow: 0 4px 12px rgba(118, 75, 162, 0.08);
+    }
+    
+    .stat-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 16px;
+      
+      .stat-icon {
+        color: #764ba2;
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+      }
+      
+      .stat-title {
+        margin: 0;
+        font-size: 14px;
+        font-weight: 600;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+    }
+    
+    .stat-value {
+      font-size: 36px;
+      font-weight: 800;
+      color: #333;
+      line-height: 1;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #764ba2 0%, #9a6cd0 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    
+    .stat-label {
+      font-size: 14px;
+      color: #666;
+    }
+  }
+}
+
+/* CTA rápidos negocio */
+.quick-actions-section {
+  .actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .action-button {
+    padding: 16px;
+    border-color: rgba(118, 75, 162, 0.2);
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 10px;
+    
+    mat-icon {
+      color: #764ba2;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+    
+    span {
+      font-weight: 500;
+    }
+    
+    &:hover {
+      border-color: #764ba2;
+      background: rgba(118, 75, 162, 0.06);
+      transform: translateY(-2px);
+    }
+  }
+}
+
+/* === TAB USUARIO === */
+.user-tab {
+  > *:not(:last-child) {
+    margin-bottom: 40px;
+  }
+}
+
+/* Reservas de usuario */
+.user-reservations-section {
+  .user-reservations-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .user-reservation-card {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+    background: white;
+    border: 1px solid rgba(118, 75, 162, 0.1);
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      border-color: rgba(118, 75, 162, 0.2);
+      box-shadow: 0 4px 12px rgba(118, 75, 162, 0.08);
+      transform: translateY(-2px);
+    }
+    
+    .reservation-date {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 60px;
+      
+      .day {
+        font-size: 24px;
+        font-weight: 700;
+        color: #764ba2;
+        line-height: 1;
+      }
+      
+      .month {
+        font-size: 13px;
+        color: #666;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+    }
+    
+    .reservation-details {
+      flex: 1;
+      
+      .business-name {
+        margin: 0 0 6px 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+      }
+      
+      .reservation-info {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 8px;
+        
+        .time {
+          font-size: 14px;
+          color: #666;
+          font-weight: 500;
+        }
+        
+        .service {
+          font-size: 13px;
+          color: #999;
+        }
+      }
+      
+      .reservation-status {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        
+        &.confirmed {
+          background: rgba(76, 175, 80, 0.1);
+          color: #2e7d32;
+        }
+        
+        &.pending {
+          background: rgba(255, 152, 0, 0.1);
+          color: #ef6c00;
+        }
+        
+        &.cancelled {
+          background: rgba(244, 67, 54, 0.1);
+          color: #c62828;
+        }
+      }
+    }
+    
+    .reservation-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      
+      .cancel-button {
+        border-color: rgba(244, 67, 54, 0.3);
+        color: #f44336;
+        font-size: 13px;
+        padding: 6px 12px;
+        
+        &:hover {
+          background: rgba(244, 67, 54, 0.08);
+        }
+      }
+    }
+  }
+}
+
+/* Historial */
+.history-section {
+  .history-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    background: white;
+    border: 1px solid rgba(118, 75, 162, 0.1);
+    border-radius: 12px;
+    
+    .history-business {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      
+      mat-icon {
+        color: #764ba2;
+        font-size: 24px;
+        width: 24px;
+        height: 24px;
+      }
+      
+      .history-info {
+        h4 {
+          margin: 0 0 4px 0;
+          font-size: 16px;
+          color: #333;
+        }
+        
+        .history-date {
+          font-size: 14px;
+          color: #666;
+        }
+      }
+    }
+    
+    .history-status {
+      .status-badge {
+        padding: 6px 16px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        
+        &.completed {
+          background: rgba(33, 150, 243, 0.1);
+          color: #1565c0;
+        }
+        
+        &.cancelled {
+          background: rgba(244, 67, 54, 0.1);
+          color: #c62828;
+        }
+      }
+    }
+  }
+}
+
+/* CTA usuario */
+.user-actions-section {
+  .actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .primary-action {
+    background: linear-gradient(135deg, #764ba2 0%, #8a5cc0 100%);
+    color: white;
+    font-weight: 600;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 10px;
+    
+    &:hover {
+      background: linear-gradient(135deg, #8a5cc0 0%, #9a6cd0 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(118, 75, 162, 0.3);
+    }
+  }
+  
+  .secondary-action {
+    padding: 16px;
+    border-color: rgba(118, 75, 162, 0.2);
+    color: #333;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 10px;
+    
+    mat-icon {
+      color: #764ba2;
+      font-size: 20px;
+      width: 20px;
+      height: 20px;
+    }
+    
+    &:hover {
+      border-color: #764ba2;
+      background: rgba(118, 75, 162, 0.06);
+      transform: translateY(-2px);
+    }
+  }
+}
+
+/* Estados vacíos */
+.empty-state {
+  padding: 60px 40px;
+  text-align: center;
+  background: linear-gradient(135deg, rgba(118, 75, 162, 0.03) 0%, rgba(154, 108, 208, 0.03) 100%);
+  border-radius: 12px;
+  border: 2px dashed rgba(118, 75, 162, 0.1);
+  
+  .empty-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: rgba(118, 75, 162, 0.2);
+    margin-bottom: 20px;
+  }
+  
+  h3 {
+    margin: 0 0 8px 0;
+    font-size: 20px;
+    color: #333;
+  }
+  
+  p {
+    margin: 0 0 24px 0;
+    color: #666;
+    font-size: 15px;
+  }
+  
+  button {
+    min-width: 200px;
+  }
+}
+
+/* Información del negocio */
+.business-info-section {
+  margin: 40px 0;
+  
+  .business-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+  
+  .info-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(118, 75, 162, 0.1);
+    
+    .info-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(118, 75, 162, 0.1);
+      
+      mat-icon {
+        color: #764ba2;
+      }
+      
+      h4 {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
+      }
+    }
+    
+    .info-content {
+      .info-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        
+        &:last-child {
+          margin-bottom: 0;
+        }
+        
+        .info-label {
+          font-size: 13px;
+          color: #666;
+          font-weight: 500;
+        }
+        
+        .info-value {
+          font-size: 13px;
+          color: #333;
+          font-weight: 500;
+          text-align: right;
+          max-width: 60%;
+          
+          &.link {
+            color: #764ba2;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+        
+        .status-badge {
+          padding: 4px 12px;
+          border-radius: 20px;
+          font-size: 12px;
+          font-weight: 600;
+          
+          &.ACTIVE {
+            background: rgba(76, 175, 80, 0.1);
+            color: #2e7d32;
+          }
+          
+          &.INACTIVE {
+            background: rgba(158, 158, 158, 0.1);
+            color: #616161;
+          }
+          
+          &.PENDING {
+            background: rgba(255, 152, 0, 0.1);
+            color: #ef6c00;
+          }
+        }
+      }
+    }
+  }
+}

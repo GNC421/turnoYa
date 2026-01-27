@@ -1,0 +1,487 @@
+<div class="dashboard-page">
+  <!-- Header Global de la Aplicación -->
+  <app-header 
+    [user]="user"
+    (logoClick)="onLogoClick()"
+    (profileAction)="onProfileAction($event)"
+  ></app-header>
+
+  <!-- Contenido Principal del Dashboard -->
+  <main class="dashboard-main">
+    <div class="dashboard-container">
+      <!-- Header interno del dashboard -->
+      <div class="dashboard-header">
+        <h1 class="dashboard-title">Panel de control</h1>
+        <p class="dashboard-subtitle">Resumen rápido de tu actividad</p>
+      </div>
+
+      <!-- Tabs de navegación -->
+      <div class="dashboard-tabs">
+        <mat-button-toggle-group [(value)]="activeTab" class="tab-group" #group="matButtonToggleGroup">
+          <mat-button-toggle value="business" class="tab-button">
+            <mat-icon>store</mat-icon>
+            <span>Negocio</span>
+          </mat-button-toggle>
+          <mat-button-toggle value="user" class="tab-button">
+            <mat-icon>person</mat-icon>
+            <span>Usuario</span>
+          </mat-button-toggle>
+        </mat-button-toggle-group>
+      </div>
+
+      <!-- Contenido del Tab activo -->
+      <div class="tab-content">
+        @if (activeTab === 'business') {
+          <!-- TAB NEGOCIO -->
+          <div class="business-tab">
+            <!-- Selector de negocio -->
+            <div class="business-selector-section">
+              <div class="section-header">
+                <h2 class="section-title">Negocio activo</h2>
+                @if (businesses.length > 1) {
+                  <button mat-stroked-button [matMenuTriggerFor]="businessMenu" class="business-menu-button">
+                    <mat-icon>store</mat-icon>
+                    <span class="business-name">{{ activeBusiness?.name || 'Seleccionar negocio' }}</span>
+                    <mat-icon>arrow_drop_down</mat-icon>
+                  </button>
+                } @else if (businesses.length === 1) {
+                  <div class="current-business">
+                    <mat-icon class="business-icon">store</mat-icon>
+                    <div class="business-info">
+                      <h3 class="business-title">{{ activeBusiness?.name }}</h3>
+                      <span class="business-status">● Activo</span>
+                    </div>
+                  </div>
+                } @else {
+                  <div class="no-business">
+                    <mat-icon>store_mall_directory</mat-icon>
+                    <div class="no-business-info">
+                      <h3>Sin negocio registrado</h3>
+                      <p>Crea tu primer negocio para comenzar a recibir reservas</p>
+                    </div>
+                    <button mat-flat-button class="create-business-button" (click)="createNewBusiness()">
+                      <mat-icon>add</mat-icon>
+                      Crear negocio
+                    </button>
+                  </div>
+                }
+              </div>
+
+              <mat-menu #businessMenu="matMenu" class="business-menu">
+                @for (business of businesses; track business.id) {
+                  <button mat-menu-item (click)="switchBusiness(business)">
+                    <mat-icon>store</mat-icon>
+                    <span>{{ business.name }}</span>
+                    @if (business.id === activeBusiness?.id) {
+                      <mat-icon class="selected-icon">check</mat-icon>
+                    }
+                  </button>
+                }
+                <mat-divider></mat-divider>
+                <button mat-menu-item (click)="createNewBusiness()">
+                  <mat-icon>add</mat-icon>
+                  <span>Agregar nuevo negocio</span>
+                </button>
+              </mat-menu>
+            </div>
+
+            <!-- Reservas próximas -->
+            @if (activeBusiness) {
+              <div class="upcoming-reservations-section">
+                <div class="section-header">
+                  <h2 class="section-title">
+                    <mat-icon>schedule</mat-icon>
+                    Próximas reservas
+                  </h2>
+                  <button mat-button class="view-all-button" (click)="viewBusinessCalendar()">
+                    Ver agenda completa
+                    <mat-icon>arrow_forward</mat-icon>
+                  </button>
+                </div>
+
+                @if (upcomingReservations.length > 0) {
+                  <div class="reservations-list">
+                    @for (reservation of upcomingReservations; track reservation.id) {
+                      <div class="reservation-card">
+                        <div class="reservation-time">
+                          <span class="time">{{ extractTime(reservation) }}</span>
+                        </div>
+                        <div class="reservation-details">
+                          <h4 class="client-name">{{ reservation.userId }}</h4>
+                          <div class="reservation-meta">
+                            <span class="service">{{ reservation.businessName }}</span>
+                              <span class="duration">{{ extractDuration(reservation) }}</span>
+                          </div>
+                        </div>
+                        <div class="reservation-actions">
+                          <button mat-icon-button [matMenuTriggerFor]="reservationMenu" class="more-button">
+                            <mat-icon>more_vert</mat-icon>
+                          </button>
+                          <mat-menu #reservationMenu="matMenu">
+                            <button mat-menu-item (click)="viewReservationDetails(reservation)">
+                              <mat-icon>visibility</mat-icon>
+                              <span>Ver detalles</span>
+                            </button>
+                            <button mat-menu-item (click)="confirmReservation(reservation)">
+                              <mat-icon>check_circle</mat-icon>
+                              <span>Confirmar</span>
+                            </button>
+                          </mat-menu>
+                        </div>
+                      </div>
+                    }
+                  </div>
+                } @else {
+                  <div class="empty-state">
+                    <mat-icon class="empty-icon">calendar_today</mat-icon>
+                    <h3>No hay reservas próximas</h3>
+                    <p>Las reservas confirmadas aparecerán aquí</p>
+                    <button mat-stroked-button (click)="viewBusinessCalendar()">
+                      Ver agenda
+                    </button>
+                  </div>
+                }
+              </div>
+
+              <!-- Indicadores rápidos - Versión Mejorada -->
+              <div class="quick-stats-section">
+                <h3 class="section-title">📊 Estadísticas del negocio</h3>
+                
+                <div class="stats-grid">
+                  <!-- Reservas Hoy -->
+                  <div class="stat-card">
+                    <div class="stat-header">
+                      <mat-icon class="stat-icon">today</mat-icon>
+                      <h3 class="stat-title">Hoy</h3>
+                    </div>
+                    <div class="stat-value">{{ businessStats.todayReservations || 0 }}</div>
+                    <span class="stat-label">reservas programadas</span>
+                    @if(businessStats.todayVsYesterday){
+                      <div class="stat-trend">
+                      <mat-icon [class.positive]="businessStats.todayVsYesterday > 0" 
+                                [class.negative]="businessStats.todayVsYesterday < 0">
+                        {{ businessStats.todayVsYesterday > 0 ? 'trending_up' : 'trending_down' }}
+                      </mat-icon>
+                      <span>{{ businessStats.todayVsYesterday > 0 ? '+' : '' }}{{ businessStats.todayVsYesterday }}%</span>
+                    </div>
+                    }
+                  </div>
+
+                  <!-- Reservas Pendientes de Confirmación -->
+                  <div class="stat-card">
+                    <div class="stat-header">
+                      <mat-icon class="stat-icon">pending_actions</mat-icon>
+                      <h3 class="stat-title">Por confirmar</h3>
+                    </div>
+                    <div class="stat-value">{{ businessStats.pendingConfirmations || 0 }}</div>
+                    <span class="stat-label">necesitan confirmación</span>
+                    @if(businessStats.pendingConfirmations > 0) {
+                      <div class="stat-subtext">
+                      <button mat-button color="warn" (click)="confirmAllPending()">
+                        <mat-icon>check_circle</mat-icon>
+                        Confirmar todas
+                      </button>
+                    </div>
+                    }
+                  </div>
+
+                  <!-- Reservas Futuras (7 días) -->
+                  <div class="stat-card">
+                    <div class="stat-header">
+                      <mat-icon class="stat-icon">calendar_month</mat-icon>
+                      <h3 class="stat-title">Próximos 7 días</h3>
+                    </div>
+                    <div class="stat-value">{{ businessStats.upcomingReservations || 0 }}</div>
+                    <span class="stat-label">reservas confirmadas</span>
+                    @if (businessStats.upcomingReservations > 0) {
+                      <div class="stat-detail">
+                      {{ businessStats.nextReservationTime ? 'Próxima: ' + businessStats.nextReservationTime : '' }}
+                    </div>
+                    }
+                  </div>
+
+                  <!-- Tasa de Confirmación -->
+                  <div class="stat-card">
+                    <div class="stat-header">
+                      <mat-icon class="stat-icon">percent</mat-icon>
+                      <h3 class="stat-title">Tasa de confirmación</h3>
+                    </div>
+                    <div class="stat-value">{{ (businessStats.confirmationRate || 0) }}%</div>
+                    <span class="stat-label">de las reservas</span>
+                    <div class="stat-progress">
+                      <mat-progress-spinner 
+                        mode="determinate" 
+                        [value]="businessStats.confirmationRate || 0"
+                        [color]="(businessStats.confirmationRate || 0) >= 80 ? 'primary' : 'accent'">
+                      </mat-progress-spinner>
+                    </div>
+                  </div>
+
+                  <!-- Ingresos Estimados Hoy -->
+                  <div class="stat-card revenue-card">
+                    <div class="stat-header">
+                      <mat-icon class="stat-icon">euro</mat-icon>
+                      <h3 class="stat-title">Ingresos estimados</h3>
+                    </div>
+                    <div class="stat-value">{{ (businessStats.todayEstimatedRevenue || 0) | currency:'EUR':'symbol':'1.0-0' }}</div>
+                    <span class="stat-label">para hoy</span>
+                    <div class="stat-breakdown" *ngIf="businessStats.averageTicket">
+                      <small>Ticket promedio: {{ businessStats.averageTicket | currency:'EUR':'symbol':'1.0-0' }}</small>
+                    </div>
+                  </div>
+
+                  <!-- Clientes Recurrentes -->
+                  <div class="stat-card">
+                    <div class="stat-header">
+                      <mat-icon class="stat-icon">repeat</mat-icon>
+                      <h3 class="stat-title">Clientes recurrentes</h3>
+                    </div>
+                    <div class="stat-value">{{ businessStats.repeatCustomers || 0 }}</div>
+                    <span class="stat-label">fidelizados</span>
+                    <div class="stat-subtext">
+                      {{ businessStats.repeatRate || 0 }}% de tus clientes
+                    </div>
+                  </div>
+
+                  <!-- Horas más ocupadas -->
+                  <div class="stat-card">
+                    <div class="stat-header">
+                      <mat-icon class="stat-icon">schedule</mat-icon>
+                      <h3 class="stat-title">Hora pico</h3>
+                    </div>
+                    <div class="stat-value">{{ businessStats.peakHour || '--:--' }}</div>
+                    <span class="stat-label">de mayor actividad</span>
+                    <div class="stat-detail" *ngIf="businessStats.peakHourReservations">
+                      {{ businessStats.peakHourReservations }} reservas en esa hora
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Información del Negocio -->
+              <div class="business-info-section" *ngIf="activeBusiness">
+                <h3 class="section-title">🏪 Información del negocio</h3>
+                
+                <div class="business-info-grid">
+                  <!-- Datos Básicos -->
+                  <div class="info-card">
+                    <div class="info-header">
+                      <mat-icon>store</mat-icon>
+                      <h4>Datos básicos</h4>
+                    </div>
+                    <div class="info-content">
+                      <div class="info-row">
+                        <span class="info-label">Categoría:</span>
+                        <span class="info-value">{{ getCategoryLabel(activeBusiness.category) }}</span>
+                      </div>
+                      <div class="info-row">
+                        <span class="info-label">Estado:</span>
+                        <span class="info-value status-badge" [class]="activeBusiness.status">
+                          {{ getStatusLabel(activeBusiness.status) }}
+                        </span>
+                      </div>
+                      <div class="info-row">
+                        <span class="info-label">Registrado:</span>
+                        <span class="info-value">{{ activeBusiness.registrationDate | date:'dd/MM/yyyy' }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Ubicación -->
+                  <div class="info-card">
+                    <div class="info-header">
+                      <mat-icon>location_on</mat-icon>
+                      <h4>Ubicación</h4>
+                    </div>
+                    <div class="info-content">
+                      <div class="info-row">
+                        <span class="info-label">Dirección:</span>
+                        <span class="info-value">{{ activeBusiness.street }}, {{ activeBusiness.number }}</span>
+                      </div>
+                      <div class="info-row">
+                        <span class="info-label">Ciudad:</span>
+                        <span class="info-value">{{ activeBusiness.city }}</span>
+                      </div>
+                      <div class="info-row">
+                        <span class="info-label">Código postal:</span>
+                        <span class="info-value">{{ activeBusiness.zipCode }}</span>
+                      </div>
+                      <div class="info-row">
+                        <span class="info-label">País:</span>
+                        <span class="info-value">{{ activeBusiness.country }}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Contacto -->
+                  <div class="info-card">
+                    <div class="info-header">
+                      <mat-icon>contact_phone</mat-icon>
+                      <h4>Contacto</h4>
+                    </div>
+                    <div class="info-content">
+                      <div class="info-row">
+                        <span class="info-label">Teléfono:</span>
+                        <span class="info-value">{{ activeBusiness.phone }}</span>
+                      </div>
+                      <div class="info-row">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value">{{ activeBusiness.email }}</span>
+                      </div>
+                      @if(activeBusiness.website) {
+                        <div class="info-row">
+                          <span class="info-label">Web:</span>
+                          <a [href]="activeBusiness.website" target="_blank" class="info-value link">
+                            {{ activeBusiness.website }}
+                            <mat-icon>open_in_new</mat-icon>
+                          </a>
+                        </div>
+                      }
+                    </div>
+                  </div>
+
+                  <!-- Rendimiento del Mes -->
+                  <div class="info-card">
+                    <div class="info-header">
+                      <mat-icon>trending_up</mat-icon>
+                      <h4>Rendimiento mensual</h4>
+                    </div>
+                    <div class="info-content">
+                      <div class="info-row">
+                        <span class="info-label">Reservas este mes:</span>
+                        <span class="info-value">{{ businessStats.monthlyReservations || 0 }}</span>
+                      </div>
+                      <div class="info-row">
+                        <span class="info-label">Ingresos estimados:</span>
+                        <span class="info-value">{{ (businessStats.monthlyRevenue || 0) | currency:'EUR':'symbol':'1.0-0' }}</span>
+                      </div>
+                      <div class="info-row">
+                        <span class="info-label">Nuevos clientes:</span>
+                        <span class="info-value">{{ businessStats.newCustomersThisMonth || 0 }}</span>
+                      </div>
+                      <div class="info-row">
+                        <span class="info-label">Tasa de ocupación:</span>
+                        <span class="info-value">{{ businessStats.occupancyRate || 0 }}%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        @if (activeTab === 'user') {
+          <!-- TAB USUARIO -->
+          <div class="user-tab">
+            <!-- Mis próximas reservas como cliente -->
+            <div class="user-reservations-section">
+              <div class="section-header">
+                <h2 class="section-title">
+                  <mat-icon>calendar_month</mat-icon>
+                  Mis próximas reservas
+                </h2>
+                <button mat-button class="view-all-button" (click)="viewUserReservations()">
+                  Ver todas mis reservas
+                  <mat-icon>arrow_forward</mat-icon>
+                </button>
+              </div>
+
+              @if (userReservations.length > 0) {
+                <div class="user-reservations-list">
+                  @for (reservation of userReservations; track reservation.id) {
+                    <div class="user-reservation-card">
+                      <div class="reservation-date">
+                        <span class="day">{{ reservation.startDateTime.getDay() }}</span>
+                        <span class="month">{{ reservation.startDateTime.getMonth() }}</span>
+                      </div>
+                      <div class="reservation-details">
+                        <h4 class="business-name">{{ reservation.businessName }}</h4>
+                        <div class="reservation-info">
+                          <span class="time">{{ reservation.startDateTime.getTime() - reservation.endDateTime.getTime() }}</span>
+                          <span class="service">• {{ reservation.businessName }}</span>
+                        </div>
+                        <div class="reservation-status" [class]="reservation.status">
+                          {{ getStatusText(reservation.status) }}
+                        </div>
+                      </div>
+                      <div class="reservation-actions">
+                        @if (reservation.status != 'CANCELLED' || 'COMPLETED') {
+                          <button mat-stroked-button class="cancel-button" (click)="cancelUserReservation(reservation)">
+                            Cancelar
+                          </button>
+                        }
+                        <button mat-icon-button (click)="viewUserReservationDetails(reservation)">
+                          <mat-icon>chevron_right</mat-icon>
+                        </button>
+                      </div>
+                    </div>
+                  }
+                </div>
+              } @else {
+                <div class="empty-state">
+                  <mat-icon class="empty-icon">event_available</mat-icon>
+                  <h3>No tienes reservas próximas</h3>
+                  <p>Busca negocios y agenda tu próximo turno</p>
+                  <button mat-flat-button (click)="searchBusinesses()">
+                    <mat-icon>search</mat-icon>
+                    Buscar negocios
+                  </button>
+                </div>
+              }
+            </div>
+
+            <!-- Historial breve -->
+            @if (lastReservation) {
+              <div class="history-section">
+                <div class="section-header">
+                  <h3 class="section-title">
+                    <mat-icon>history</mat-icon>
+                    Última reserva realizada
+                  </h3>
+                </div>
+                <div class="history-card">
+                  <div class="history-business">
+                    <mat-icon>store</mat-icon>
+                    <div class="history-info">
+                      <h4>{{ lastReservation.businessName }}</h4>
+                      <span class="history-date">{{ lastReservation.startDateTime.getDate() }}</span>
+                    </div>
+                  </div>
+                  <div class="history-status">
+                    <span class="status-badge" [class]="lastReservation.status">
+                      {{ getStatusText(lastReservation.status) }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            }
+
+            <!-- CTA útiles para usuario -->
+            <div class="user-actions-section">
+              <h3 class="section-title">Acciones rápidas</h3>
+              <div class="actions-grid">
+                <button mat-flat-button class="primary-action" (click)="searchBusinesses()">
+                  <mat-icon>search</mat-icon>
+                  <span>Buscar negocios</span>
+                </button>
+                <button mat-stroked-button class="secondary-action" (click)="bookNewAppointment()">
+                  <mat-icon>add_circle</mat-icon>
+                  <span>Reservar nuevo turno</span>
+                </button>
+                <button mat-stroked-button class="secondary-action" (click)="viewFavoriteBusinesses()">
+                  <mat-icon>favorite</mat-icon>
+                  <span>Negocios favoritos</span>
+                </button>
+                <button mat-stroked-button class="secondary-action" (click)="viewUserProfile()">
+                  <mat-icon>person</mat-icon>
+                  <span>Mi perfil</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </div>
+  </main>
+</div>

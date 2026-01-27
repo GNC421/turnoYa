@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>4.0.1</version>
+	</parent>
+	<groupId>com.turnoya</groupId>
+	<artifactId>parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>parent</name>
+	<description>Aplicación web para que pequeños negocios (peluquerías, clínicas, entrenadores, talleres) gestionen turnos/reservas online sin depender de WhatsApp o llamadas.</description>
+	<developers>
+		<developer>
+			<name>Guillermo Nunez</name>
+			<email>nunezcano.guillermo@gmail.com</email>
+		</developer>
+	</developers>
+	<properties>
+		<java.version>17</java.version>
+	</properties>
+	<packaging>pom</packaging>
+
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-autoconfigure -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-autoconfigure</artifactId>
+			<version>4.0.1</version>
+		</dependency>
+	</dependencies>
+
+	<modules>
+		<module>../commons</module>
+<!--		<module>../turnoya-discovery</module>-->
+		<module>../gateway</module>
+		<module>../auth-service</module>
+		<module>../business-service</module>
+        <module>../users-service</module>
+		<module>../reservation-service</module>
+	</modules>
+
+</project>

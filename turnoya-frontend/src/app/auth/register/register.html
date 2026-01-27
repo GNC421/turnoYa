@@ -1,0 +1,175 @@
+<div class="register-container">
+  <div class="register-card">
+    <div class="register-header">
+      <h2>Crear Cuenta</h2>
+      <p class="subtitle">Únete a TurnoYa y gestiona tus reservas y negocios</p>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <!-- Nombre completo -->
+      <div class="form-group">
+        <label for="name">Nombre completo *</label>
+        <input
+          id="name"
+          type="text"
+          formControlName="name"
+          placeholder="Juan Pérez"
+          [class.error-border]="showError('name')"
+        />
+        @if (showError('name')) {
+          <div class="error-text">
+            {{ getErrorMessage('name') }}
+          </div>
+        }
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input
+          id="email"
+          type="email"
+          formControlName="email"
+          placeholder="usuario@ejemplo.com"
+          [class.error-border]="showError('email')"
+        />
+        @if (showError('email')) {
+          <div class="error-text">
+            {{ getErrorMessage('email') }}
+          </div>
+        }
+      </div>
+
+      <!-- Teléfono -->
+      <div class="form-group">
+        <label for="phone">Teléfono *</label>
+        <input
+          id="phone"
+          type="tel"
+          formControlName="phone"
+          placeholder="+51 987 654 321"
+          [class.error-border]="showError('phone')"
+        />
+        <small class="hint">Formato: 8-15 dígitos, puede incluir +, -, espacios o paréntesis</small>
+        @if (showError('phone')) {
+          <div class="error-text">
+            {{ getErrorMessage('phone') }}
+          </div>
+        }
+      </div>
+
+      <!-- Contraseña -->
+      <div class="form-group">
+        <label for="password">Contraseña *</label>
+        <div class="password-input">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Mínimo 6 caracteres con mayúscula, minúscula y número"
+            [class.error-border]="showError('password')"
+          />
+          <button 
+            type="button" 
+            class="toggle-password"
+            (click)="togglePasswordVisibility('password')">
+            {{ showPassword ? '👁️' : '👁️‍🗨️' }}
+          </button>
+        </div>
+        @if (showError('password')) {
+          <div class="error-text">
+            {{ getErrorMessage('password') }}
+            @if (getPasswordStrengthMessage()) {
+              <br>
+              <span class="strength-error">{{ getPasswordStrengthMessage() }}</span>
+            }
+          </div>
+        } @else if (registerForm.get('password')?.value) {
+          <div class="password-strength">
+            <div class="strength-bar" [class.weak]="registerForm.get('password')?.errors?.['uppercase'] || 
+                                                   registerForm.get('password')?.errors?.['lowercase'] || 
+                                                   registerForm.get('password')?.errors?.['number']"
+                                     [class.medium]="!registerForm.get('password')?.errors?.['uppercase'] && 
+                                                     !registerForm.get('password')?.errors?.['lowercase'] && 
+                                                     !registerForm.get('password')?.errors?.['number']">
+            </div>
+            <span class="strength-text">
+              {{ registerForm.get('password')?.errors ? 'Débil' : 'Fuerte' }}
+            </span>
+          </div>
+        }
+      </div>
+
+      <!-- Confirmar Contraseña -->
+      <div class="form-group">
+        <label for="confirmPassword">Confirmar contraseña *</label>
+        <div class="password-input">
+          <input
+            id="confirmPassword"
+            [type]="showConfirmPassword ? 'text' : 'password'"
+            formControlName="confirmPassword"
+            placeholder="Repite tu contraseña"
+            [class.error-border]="showError('confirmPassword')"
+          />
+          <button 
+            type="button" 
+            class="toggle-password"
+            (click)="togglePasswordVisibility('confirmPassword')">
+            {{ showConfirmPassword ? '👁️' : '👁️‍🗨️' }}
+          </button>
+        </div>
+        @if (showError('confirmPassword')) {
+          <div class="error-text">
+            {{ getErrorMessage('confirmPassword') }}
+            @if (registerForm.errors?.['passwordMismatch']) {
+              <span class="strength-error">Las contraseñas no coinciden</span>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Términos y condiciones -->
+      <div class="terms-group">
+        <input type="checkbox" id="terms" required />
+        <label for="terms">
+          Acepto los <a href="#" class="terms-link">Términos y Condiciones</a> y la 
+          <a href="#" class="terms-link">Política de Privacidad</a> *
+        </label>
+      </div>
+
+      <!-- Mensajes de éxito/error -->
+      @if (errorMessage) {
+        <div class="error-message">
+          {{ errorMessage }}
+        </div>
+      }
+      
+      @if (successMessage) {
+        <div class="success-message">
+          {{ successMessage }}
+        </div>
+      }
+
+      <!-- Botón de registro -->
+      <button
+        type="submit"
+        class="register-button"
+        [disabled]="registerForm.invalid || isLoading"
+      >
+        @if (isLoading) {
+          <span class="spinner"></span>
+          <span>Creando cuenta...</span>
+        } @else {
+          <span>Crear Cuenta</span>
+        }
+      </button>
+
+      <!-- Enlace a login -->
+      <div class="register-footer">
+        <p class="login-link">
+          ¿Ya tienes cuenta? <a routerLink="/login">Inicia sesión</a>
+        </p>
+      </div>
+    </form>
+  </div>
+</div>

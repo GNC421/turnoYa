@@ -1,0 +1,66 @@
+spring:
+  application:
+    name: business-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/businessdb?autocommit=true
+    username: postgres
+    password: admin123
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      auto-commit: true
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        default_schema: public
+        connection:
+          autocommit: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    show-sql: true
+
+  # Security (usuario básico para desarrollo)
+  security:
+    user:
+      name: admin
+      password: admin123
+
+server:
+  port: 8081
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always
+    metrics:
+      enabled: true
+
+# Logging
+logging:
+  level:
+    com.turnoya.business: DEBUG
+    org.springframework.web: INFO
+    org.hibernate.SQL: DEBUG
+    org.h2.server.web: TRACE  # <-- CRÍTICO para H2 Console
+    org.h2: DEBUG
+
+# Swagger
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+    try-it-out-enabled: true
+    display-request-duration: true
+    persist-authorization: true

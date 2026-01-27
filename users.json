@@ -1,0 +1,32 @@
+[
+  {
+    "email": "maria.gonzalez@correo.com",
+    "password": "admin1234",
+    "name": "María González",
+    "phone": "+34 612345678"
+  },
+  {
+    "email": "john.doe@gmail.com",
+    "password": "admin1234",
+    "name": "John Doe",
+    "phone": "+1 555-123-4567"
+  },
+  {
+    "email": "ana.lopez@empresa.es",
+    "password": "admin1234",
+    "name": "Ana López",
+    "phone": "634987123"
+  },
+  {
+    "email": "usuario.test@dominio.net",
+    "password": "admin1234",
+    "name": "Carlos Fernández",
+    "phone": "+34 600112233"
+  },
+  {
+    "email": "sophie.martin@mail.fr",
+    "password": "admin1234",
+    "name": "Sophie Martin",
+    "phone": "+33 612345678"
+  }
+]
