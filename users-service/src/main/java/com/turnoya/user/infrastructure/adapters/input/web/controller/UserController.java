@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -18,8 +19,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class UserController {
     private final RegisterUserPort registerUserPort;
-    private final GetUserProfilePort getUserProfilePort;
-    private final GetUserStatsPort getUserStatsPort;
+    private final GetUserProfilePort userProfilePort;
+    private final GetUserStatsPort userStatsPort;
     private final UpdateUserProfilePort updateUserProfilePort;
     private final ChangeCredentialsPort changeCredentialsPort;
     private final ValidateCredentialsPort validateCredentialsPort;
@@ -32,7 +33,7 @@ public class UserController {
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserResponse> getProfile(@PathVariable UUID userId) {
-        UserResponse response = getUserProfilePort.getProfile(userId);
+        UserResponse response = userProfilePort.getProfile(userId);
         return ResponseEntity.ok(response);
     }
 
@@ -59,8 +60,14 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{userId}/stats")
-    public ResponseEntity<UserStatsResponse> getStats(@PathVariable UUID userId) {
-        return ResponseEntity.ok(getUserStatsPort.getStats());
+
+    @GetMapping("/stats/users")
+    public ResponseEntity<List<UserStatsResponse>> getUserStats(@RequestParam List<UUID> userIds) {
+        if (userIds == null || userIds.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<UserStatsResponse> stats = userStatsPort.getStats(userIds);
+        return ResponseEntity.ok(stats);
     }
 }

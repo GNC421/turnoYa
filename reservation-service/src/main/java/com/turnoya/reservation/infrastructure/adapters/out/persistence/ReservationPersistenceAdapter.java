@@ -47,4 +47,9 @@ public class ReservationPersistenceAdapter implements ReservationRepositoryPort 
     public Optional<Reservation> findById(UUID id) {
         return jpaRepository.findById(id).map(mapper::toDomain);
     }
+
+    @Override
+    public void delete(UUID id) {
+        jpaRepository.deleteById(id);
+    }
 }

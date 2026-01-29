@@ -1,5 +1,7 @@
 com\turnoya\user\application\usecases\UpdateProfileUseCase.class
+com\turnoya\user\application\ports\input\GetUserStatsPort.class
 com\turnoya\user\infrastructure\adapters\output\persistence\config\SecurityConfig.class
+com\turnoya\user\application\dto\response\UserStatsResponse$UserStatsResponseBuilder.class
 com\turnoya\user\application\usecases\RegisterUserUseCase.class
 com\turnoya\user\application\usecases\GetUserProfileUseCase.class
 com\turnoya\user\infrastructure\adapters\output\persistence\adapter\UserRepositoryAdapter.class
@@ -8,10 +10,15 @@ com\turnoya\user\application\dto\request\ValidateCredentialsRequest.class
 com\turnoya\user\application\dto\response\UserResponse$UserResponseBuilder.class
 com\turnoya\user\infrastructure\adapters\output\persistence\entity\UserEntity.class
 com\turnoya\user\application\dto\response\ValidateCredentialsResponse.class
+com\turnoya\user\application\dto\response\UserStatsResponse.class
+com\turnoya\user\application\ports\input\UpdateUserProfilePort.class
+com\turnoya\user\application\ports\input\GetUserProfilePort.class
 com\turnoya\user\infrastructure\adapters\input\web\controller\GlobalExceptionHandler$ErrorResponse.class
 com\turnoya\user\application\ports\output\UserRepositoryPort.class
 com\turnoya\user\infrastructure\adapters\output\persistence\repository\UserJpaRepository.class
+com\turnoya\user\infrastructure\config\RestTemplateConfig.class
 com\turnoya\user\application\dto\request\RegisterUserRequest.class
+com\turnoya\user\application\usecases\GetUserStatsUseCase.class
 com\turnoya\user\UserServiceApplication.class
 com\turnoya\user\application\dto\response\UserResponse.class
 com\turnoya\user\application\dto\request\ChangePasswordRequest.class
@@ -19,9 +26,12 @@ com\turnoya\user\domain\model\User.class
 com\turnoya\user\infrastructure\adapters\input\web\controller\GlobalExceptionHandler.class
 com\turnoya\user\infrastructure\adapters\input\web\controller\UserController.class
 com\turnoya\user\application\dto\response\ValidateCredentialsResponse$ValidateCredentialsResponseBuilder.class
+com\turnoya\user\application\ports\input\ChangeCredentialsPort.class
+com\turnoya\user\application\ports\input\RegisterUserPort.class
 com\turnoya\user\application\ports\input\ValidateCredentialsPort.class
 com\turnoya\user\application\usecases\ValidateCredentialsUseCase.class
+com\turnoya\user\infrastructure\adapters\output\client\ReservationServiceClient.class
 com\turnoya\user\application\dto\request\UpdateUserRequest.class
 com\turnoya\user\domain\model\User$UserBuilder.class
-com\turnoya\user\application\ports\input\UserManagementPort.class
+com\turnoya\user\application\ports\output\ReservationServicePort.class
 com\turnoya\user\domain\service\PasswordService.class

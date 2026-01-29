@@ -18,8 +18,6 @@ public class ValidateCredentialsUseCase implements ValidateCredentialsPort {
 
     @Override
     public ValidateCredentialsResponse execute(ValidateCredentialsRequest request) {
-        System.out.println("LOG: REQ BODY = " + request.getEmail());
-        System.out.println("LOG: REQ BODY = " + request.getPassword());
         // 1. Buscar usuario por email
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid credentials"));

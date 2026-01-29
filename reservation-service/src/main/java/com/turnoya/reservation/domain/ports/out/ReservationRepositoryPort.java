@@ -13,4 +13,5 @@ public interface ReservationRepositoryPort {
     List<Reservation> findByBusinessIdAndDateTimeRange(
             UUID businessId, LocalDateTime start, LocalDateTime end);
     Optional<Reservation> findById(UUID id);
+    void delete(UUID id);
 }

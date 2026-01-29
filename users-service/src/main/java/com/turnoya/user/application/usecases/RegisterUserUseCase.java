@@ -11,8 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
-
 @Service
 @RequiredArgsConstructor
 public class RegisterUserUseCase implements RegisterUserPort {
@@ -34,17 +32,6 @@ public class RegisterUserUseCase implements RegisterUserPort {
         User saved = repository.save(user);
         System.out.println("LOG: FALLO DE SAVE");
         return toResponse(saved);
-    }
-
-    @Override
-    @Transactional
-    public UserResponse updateProfile(UUID userId, UpdateUserRequest request) {
-        User user = repository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
-        //user.updateProfile(request.getName(), request.getPhone());
-        User updated = repository.save(user);
-        return toResponse(updated);
     }
 
     private UserResponse toResponse(User user) {

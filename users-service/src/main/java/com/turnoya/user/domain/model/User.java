@@ -1,5 +1,6 @@
 package com.turnoya.user.domain.model;
 
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -36,5 +37,11 @@ public class User {
                 .createdAt(LocalDateTime.now())
                 .enabled(true)
                 .build();
+    }
+
+    public void updateProfile(@Size(min = 2, max = 100) String name, @Size(min = 9, max = 20) String phone) {
+        this.name = name;
+        this.phone = phone;
+        this.updatedAt = LocalDateTime.now();
     }
 }
