@@ -1,9 +1,11 @@
 package com.turnoya.business.infrastructure.adapters.in.web.controller;
 
+import com.turnoya.business.application.dto.request.BusinessSearchRequest;
 import com.turnoya.business.application.dto.request.RegisterBusinessRequest;
 import com.turnoya.business.application.dto.response.BusinessResponse;
-import com.turnoya.business.application.usecases.GetBusinessUseCase;
-import com.turnoya.business.application.usecases.RegisterBusinessUseCase;
+import com.turnoya.business.application.ports.input.BusinessSearchUseCasePort;
+import com.turnoya.business.application.ports.input.GetBusinessUseCasePort;
+import com.turnoya.business.application.ports.input.RegisterBusinessUseCasePort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -23,8 +25,9 @@ import java.util.UUID;
 @Tag(name = "Negocios", description = "API para gestión de negocios")
 public class BusinessController {
 
-    private final RegisterBusinessUseCase registerBusinessUseCase;
-    private final GetBusinessUseCase getBusinessUseCase;
+    private final RegisterBusinessUseCasePort registerBusinessUseCase;
+    private final GetBusinessUseCasePort getBusinessUseCase;
+    private final BusinessSearchUseCasePort businessSearchUseCase;
 
     @Operation(
             summary = "Crear un nuevo negocio",
@@ -95,40 +98,6 @@ public class BusinessController {
     }
 
     @Operation(
-            summary = "Listar negocios por categoría",
-            description = "Obtiene todos los negocios que pertenecen a una categoría específica"
-    )
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Lista de negocios (puede estar vacía)"
-            )
-    })
-    @GetMapping("/category/{category}")
-    public ResponseEntity<List<BusinessResponse>> getBusinessesByCategory(
-            @PathVariable String category) {
-        List<BusinessResponse> businesses = getBusinessUseCase.getByCategory(category);
-        return ResponseEntity.ok(businesses);
-    }
-
-    @Operation(
-            summary = "Listar negocios por categoría",
-            description = "Obtiene todos los negocios que pertenecen a una categoría específica"
-    )
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Lista de negocios (puede estar vacía)"
-            )
-    })
-    @GetMapping("/city/{city}")
-    public ResponseEntity<List<BusinessResponse>> getBusinessesByCity(
-            @PathVariable String city) {
-        List<BusinessResponse> businesses = getBusinessUseCase.getByCity(city);
-        return ResponseEntity.ok(businesses);
-    }
-
-    @Operation(
             summary = "Listar todos los negocios",
             description = "Obtiene el listado completo de todos los negocios registrados"
     )
@@ -139,6 +108,21 @@ public class BusinessController {
     @GetMapping
     public ResponseEntity<List<BusinessResponse>> getAllBusinesses() {
         List<BusinessResponse> businesses = getBusinessUseCase.getAll();
+        return ResponseEntity.ok(businesses);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<BusinessResponse>> searchBusinesses(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) String category,
+            @RequestParam(required = false) String city,
+            @RequestParam(required = false) String status,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size) {
+
+        BusinessSearchRequest query = new BusinessSearchRequest(name, category, city, status, page, size);
+
+        List<BusinessResponse> businesses = businessSearchUseCase.execute(query);
         return ResponseEntity.ok(businesses);
     }
 

@@ -3,6 +3,7 @@ package com.turnoya.business.infrastructure.adapters.out.persistence.repository;
 import com.turnoya.business.domain.model.BusinessCategory;
 import com.turnoya.business.infrastructure.adapters.out.persistence.entity.BusinessEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,7 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface BusinessJpaRepository extends JpaRepository<BusinessEntity, UUID> {
+public interface BusinessJpaRepository extends JpaRepository<BusinessEntity, UUID>, JpaSpecificationExecutor<BusinessEntity> {
 
     List<BusinessEntity> findByOwnerId(String ownerId);
 

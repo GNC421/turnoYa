@@ -8,16 +8,35 @@ import com.turnoya.business.application.dto.request.RegisterBusinessRequest;
 import com.turnoya.business.application.dto.request.UpdateBusinessRequest;
 import com.turnoya.business.application.dto.response.BusinessResponse;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class BusinessMapper {
 
-    public static Business toDomain(RegisterBusinessCommand command) {
+    public static Business toDomain(String ownerId, RegisterBusinessRequest request) {
+
+        Address address = new Address(
+                request.street(),
+                request.number(),
+                request.city(),
+                request.state(),
+                request.zipCode(),
+                request.country()
+        );
+
+        ContactInfo contactInfo = new ContactInfo(
+                request.email(),
+                request.phone(),
+                request.website()
+        );
+
         return Business.register(
-                command.ownerId(),
-                command.name(),
-                command.description(),
-                command.category(),
-                command.address(),
-                command.contactInfo()
+                ownerId,
+                request.name(),
+                request.description(),
+                request.category(),
+                address,
+                contactInfo
         );
     }
 
@@ -43,7 +62,7 @@ public class BusinessMapper {
         );
     }
 
-    public static RegisterBusinessCommand toCommand(
+    public RegisterBusinessCommand toCommand(
             String ownerId,
             RegisterBusinessRequest request
     ) {
@@ -64,7 +83,7 @@ public class BusinessMapper {
         );
     }
 
-    public static Business updateDomainFromRequest(
+    public Business updateDomainFromRequest(
             Business business,
             UpdateBusinessRequest request
     ) {
@@ -92,5 +111,11 @@ public class BusinessMapper {
         );
 
         return business;
+    }
+
+    public static List<BusinessResponse> toResponseList(List<Business> domain) {
+        return domain.stream()
+                .map(BusinessMapper::toResponse)
+                .collect(Collectors.toList());
     }
 }
